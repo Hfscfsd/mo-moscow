@@ -10,12 +10,10 @@ export default async function handler(req, res) {
   }
   
   try {
-    // Ваши данные
     const CLIENT_ID = '1471781882231394344';
     const CLIENT_SECRET = 'KW1dzvOIrrmtGVIn8yPwTSBQ7KdlVw_n';
-    const REDIRECT_URI = 'https://mo-moscow.vercel.app/api/auth/callback';
+    const REDIRECT_URI = 'https://ministry-defence.vercel.app/api/auth/callback';
     
-    // Обмен кода на токен
     const tokenResponse = await fetch('https://discord.com/api/oauth2/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -31,17 +29,14 @@ export default async function handler(req, res) {
     
     const tokenData = await tokenResponse.json();
     
-    // Получение информации о пользователе
     const userResponse = await fetch('https://discord.com/api/users/@me', {
       headers: { Authorization: `Bearer ${tokenData.access_token}` }
     });
     
     const userData = await userResponse.json();
     
-    // Проверка админа (ваш ID)
     const hasAccess = userData.id === '970227637173764156';
     
-    // Сохраняем в куки
     const user = {
       id: userData.id,
       username: userData.username,
