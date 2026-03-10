@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>МО Г.Москва | Анонимный ящик</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0f1a 0%, #1a1f2a 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Анимированный фон */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .grid {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                linear-gradient(rgba(255, 215, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 215, 0, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: rotate(45deg) translateY(-25%);
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            from { transform: rotate(45deg) translateY(-25%) translateX(0); }
+            to { transform: rotate(45deg) translateY(-25%) translateX(50px); }
+        }
+
+        /* Основной контейнер */
+        .container {
+            background: rgba(20, 25, 35, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 50px;
+            padding: 50px;
+            max-width: 600px;
+            width: 100%;
+            border: 2px solid gold;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.2);
+            position: relative;
+            animation: containerFloat 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes containerFloat {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+
+        /* Герб */
+        .emblem {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #2a2f3a, #1a1f2a);
+            color: gold;
+            padding: 12px 40px;
+            border-radius: 50px;
+            font-weight: 900;
+            font-size: 1.2em;
+            border: 2px solid gold;
+            white-space: nowrap;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            text-shadow: 0 0 10px gold;
+        }
+
+        /* Шапка */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid gold;
+            margin-top: 20px;
+        }
+
+        .logo h1 {
+            color: gold;
+            font-size: 2em;
+            font-weight: 900;
+            text-shadow: 0 0 20px gold;
+        }
+
+        .logo p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9em;
+        }
+
+        /* Кнопка входа */
+        .auth-btn {
+            background: none;
+            border: 2px solid gold;
+            color: gold;
+            padding: 12px 25px;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        .auth-btn:hover {
+            background: gold;
+            color: #1a1f2a;
+            box-shadow: 0 0 20px gold;
+        }
+
+        /* Профиль пользователя */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255,215,0,0.1);
+            padding: 8px 20px;
+            border-radius: 40px;
+            border: 1px solid gold;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: gold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a1f2a;
+            font-weight: 900;
+        }
+
+        .user-info {
+            color: white;
+        }
+
+        .user-rank {
+            font-size: 0.8em;
+            color: gold;
+        }
+
+        /* Форма */
+        .form-title {
+            color: gold;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            color: gold;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .styled-select, .styled-textarea, .styled-input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid gold;
+            border-radius: 30px;
+            color: white;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .styled-select option {
+            background: #1a1f2a;
+        }
+
+        .styled-select:focus, .styled-textarea:focus, .styled-input:focus {
+            outline: none;
+            border-color: gold;
+            box-shadow: 0 0 20px gold;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .char-counter {
+            text-align: right;
+            color: gold;
+            font-size: 0.9em;
+            margin-top: 8px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, gold, #ffd700);
+            color: #1a1f2a;
+            border: none;
+            padding: 18px;
+            border-radius: 40px;
+            font-size: 1.3em;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px gold;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Мини-админка */
+        .mini-admin {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #2a2f3a, #1a1f2a);
+            border: 2px solid gold;
+            border-radius: 60px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 100;
+        }
+
+        .mini-admin:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px gold;
+        }
+
+        .mini-admin-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: gold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a1f2a;
+            font-weight: 900;
+            font-size: 1.2em;
+        }
+
+        .mini-admin-info {
+            color: white;
+        }
+
+        .mini-admin-rank {
+            font-size: 0.8em;
+            color: gold;
+        }
+
+        .mini-admin-name {
+            font-weight: 700;
+        }
+
+        .mini-admin-badge {
+            background: gold;
+            color: #1a1f2a;
+            padding: 5px 10px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        /* Модальное окно */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1f2a, #2a2f3a);
+            border-radius: 50px;
+            padding: 50px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 2px solid gold;
+            box-shadow: 0 0 50px gold;
+        }
+
+        .modal-content h2 {
+            color: gold;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .message-card {
+            background: rgba(255,215,0,0.1);
+            border: 1px solid gold;
+            border-radius: 30px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .message-type {
+            background: gold;
+            color: #1a1f2a;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-weight: 700;
+        }
+
+        .message-date {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .message-content {
+            color: white;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-btn {
+            background: none;
+            border: 1px solid gold;
+            color: gold;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .message-btn:hover {
+            background: gold;
+            color: #1a1f2a;
+        }
+
+        .message-btn.delete:hover {
+            background: #ff4444;
+            border-color: #ff4444;
+        }
+
+        /* Уведомление */
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #1a1f2a, #2a2f3a);
+            border: 2px solid gold;
+            border-radius: 50px;
+            padding: 20px 30px;
+            color: gold;
+            transform: translateX(500px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* Футер */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: gold;
+            font-size: 0.9em;
+        }
+
+        /* Загрузка */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,215,0,0.3);
+            border-radius: 50%;
+            border-top-color: gold;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Анимированный фон -->
+    <div class="background">
+        <div class="grid"></div>
+    </div>
+
+    <div class="container">
+        <!-- Герб -->
+        <div class="emblem">
+            ⚔️ МО Г.МОСКВА ⚔️
+        </div>
+
+        <!-- Шапка -->
+        <div class="header">
+            <div class="logo">
+                <h1>ГЛАС НАРОДА</h1>
+                <p>Анонимные обращения</p>
+            </div>
+            <div id="authSection">
+                <button class="auth-btn" onclick="window.location.href='/auth/discord'">
+                    ВОЙТИ
+                </button>
+            </div>
+        </div>
+
+        <!-- Форма -->
+        <div class="form-title">
+            ⚔️ ОТПРАВИТЬ ДОНЕСЕНИЕ
+        </div>
+
+        <form id="feedbackForm">
+            <div class="input-group">
+                <label>📌 Тип обращения</label>
+                <select id="type" class="styled-select" required>
+                    <option value="" disabled selected>Выберите тип</option>
+                    <option value="Военный вопрос">⚔️ Военный вопрос</option>
+                    <option value="Стратегическое предложение">🎯 Стратегическое предложение</option>
+                    <option value="Проблема безопасности">⚠️ Проблема безопасности</option>
+                    <option value="Кадровый вопрос">👥 Кадровый вопрос</option>
+                    <option value="Награждение">🏅 Награждение</option>
+                    <option value="Иное">📝 Иное</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>💬 Содержание</label>
+                <textarea id="message" class="styled-textarea" placeholder="Опишите ситуацию..." maxlength="1000" required></textarea>
+                <div class="char-counter">
+                    <span id="charCount">0</span>/1000
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>📧 Discord ID (для ответа)</label>
+                <input type="text" id="userId" class="styled-input" placeholder="Ваш Discord ID (необязательно)">
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <span>⚡</span> ОТПРАВИТЬ
+            </button>
+        </form>
+
+        <div class="footer">
+            <p>⚔️ МИНИСТЕРСТВО ОБОРОНЫ Г.МОСКВА ⚔️</p>
+        </div>
+    </div>
+
+    <!-- Мини-админка -->
+    <div id="miniAdmin" class="mini-admin" style="display: none;" onclick="openAdminModal()">
+        <div class="mini-admin-avatar" id="adminAvatar">⚔️</div>
+        <div class="mini-admin-info">
+            <div class="mini-admin-rank" id="adminRank">-</div>
+            <div class="mini-admin-name" id="adminName">Загрузка...</div>
+        </div>
+        <div class="mini-admin-badge" id="adminCount">0</div>
+    </div>
+
+    <!-- Модальное окно админки -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <h2>⚔️ ВОЕННЫЙ СОВЕТ</h2>
+            
+            <div id="messagesList">
+                <!-- Сообщения загружаются сюда -->
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="message-btn" onclick="closeAdminModal()">ЗАКРЫТЬ</button>
+                <button class="message-btn" onclick="refreshMessages()">🔄 ОБНОВИТЬ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомление -->
+    <div id="notification" class="notification">
+        <span id="notificationIcon">⚔️</span>
+        <span id="notificationMessage">Уведомление</span>
+    </div>
+
+    <script>
+        // Состояние
+        let currentUser = null;
+        let messages = [];
+
+        // Загрузка пользователя при старте
+        async function loadUser() {
+            try {
+                const response = await fetch('/api/user');
+                if (response.ok) {
+                    currentUser = await response.json();
+                    updateAuthUI();
+                    
+                    if (currentUser.hasAccess) {
+                        loadMessages();
+                        document.getElementById('miniAdmin').style.display = 'flex';
+                        document.getElementById('adminName').textContent = currentUser.username;
+                        document.getElementById('adminRank').textContent = currentUser.robloxRank?.name || 'Нет звания';
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load user:', error);
+            }
+        }
+
+        // Загрузка сообщений
+        async function loadMessages() {
+            try {
+                const response = await fetch('/api/messages');
+                if (response.ok) {
+                    messages = await response.json();
+                    updateAdminCount();
+                }
+            } catch (error) {
+                console.error('Failed to load messages:', error);
+            }
+        }
+
+        // Обновление счетчика
+        function updateAdminCount() {
+            const newCount = messages.filter(m => m.status === 'new').length;
+            document.getElementById('adminCount').textContent = newCount;
+        }
+
+        // Обновление UI авторизации
+        function updateAuthUI() {
+            const authSection = document.getElementById('authSection');
+            
+            if (currentUser) {
+                const avatarLetter = currentUser.username.charAt(0).toUpperCase();
+                const rankName = currentUser.robloxRank?.name || 'Без звания';
+                
+                authSection.innerHTML = `
+                    <div class="user-profile">
+                        <div class="user-avatar">${avatarLetter}</div>
+                        <div class="user-info">
+                            <div>${currentUser.username}</div>
+                            <div class="user-rank">${rankName}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                authSection.innerHTML = `
+                    <button class="auth-btn" onclick="window.location.href='/auth/discord'">
+                        ВОЙТИ
+                    </button>
+                `;
+            }
+        }
+
+        // Показать уведомление
+        function showNotification(message, icon = '⚔️') {
+            const notification = document.getElementById('notification');
+            document.getElementById('notificationIcon').textContent = icon;
+            document.getElementById('notificationMessage').textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 3000);
+        }
+
+        // Счетчик символов
+        document.getElementById('message').addEventListener('input', function() {
+            document.getElementById('charCount').textContent = this.value.length;
+        });
+
+        // Отправка формы
+        document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const type = document.getElementById('type').value;
+            const message = document.getElementById('message').value.trim();
+            const userId = document.getElementById('userId').value.trim();
+
+            if (!message) {
+                showNotification('Введите сообщение', '❌');
+                return;
+            }
+
+            const submitBtn = document.querySelector('.submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading"></span> ОТПРАВКА...';
+
+            try {
+                showNotification('⚡ ПЕРЕДАЧА ДОНЕСЕНИЯ...');
+                
+                const response = await fetch('/api/send-message', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type, message, userId })
+                });
+
+                if (response.ok) {
+                    showNotification('✅ ДОНЕСЕНИЕ ДОСТАВЛЕНО');
+                    document.getElementById('feedbackForm').reset();
+                    document.getElementById('charCount').textContent = '0';
+                    
+                    if (currentUser?.hasAccess) {
+                        await loadMessages();
+                    }
+                } else {
+                    showNotification('❌ ОШИБКА ОТПРАВКИ');
+                }
+            } catch (error) {
+                showNotification('❌ ОШИБКА СОЕДИНЕНИЯ');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>⚡</span> ОТПРАВИТЬ';
+            }
+        });
+
+        // Открыть админ-панель
+        async function openAdminModal() {
+            await loadMessages();
+            
+            const messagesList = document.getElementById('messagesList');
+            
+            if (messages.length === 0) {
+                messagesList.innerHTML = '<div style="color: gold; text-align: center; padding: 40px;">📭 НЕТ ДОНЕСЕНИЙ</div>';
+            } else {
+                messagesList.innerHTML = messages
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))
+                    .map(msg => `
+                        <div class="message-card" id="msg-${msg.id}">
+                            <div class="message-header">
+                                <span class="message-type">${msg.type}</span>
+                                <span class="message-date">${new Date(msg.date).toLocaleString()}</span>
+                            </div>
+                            <div class="message-content">
+                                ${msg.message}
+                                ${msg.userId ? `<br><small>📧 Discord ID: ${msg.userId}</small>` : ''}
+                            </div>
+                            <div class="message-actions">
+                                <button class="message-btn" onclick="markAsRead('${msg.id}')">
+                                    ✅ ПРИНЯТО
+                                </button>
+                                <button class="message-btn delete" onclick="deleteMessage('${msg.id}')">
+                                    🔥 УНИЧТОЖИТЬ
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+            }
+            
+            document.getElementById('adminModal').style.display = 'flex';
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').style.display = 'none';
+        }
+
+        // Отметить как прочитанное
+        async function markAsRead(messageId) {
+            try {
+                const response = await fetch(`/api/messages/${messageId}/read`, {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    await loadMessages();
+                    showNotification('Донесение принято', '✅');
+                    openAdminModal();
+                }
+            } catch (error) {
+                showNotification('Ошибка', '❌');
+            }
+        }
+
+        // Удалить сообщение
+        async function deleteMessage(messageId) {
+            if (!confirm('⚠️ УНИЧТОЖИТЬ ДОНЕСЕНИЕ?')) return;
+            
+            try {
+                const response = await fetch(`/api/messages/${messageId}/delete`, {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    await loadMessages();
+                    showNotification('Донесение уничтожено', '🔥');
+                    openAdminModal();
+                }
+            } catch (error) {
+                showNotification('Ошибка', '❌');
+            }
+        }
+
+        // Обновить сообщения
+        async function refreshMessages() {
+            await loadMessages();
+            openAdminModal();
+        }
+
+        // Загружаем пользователя при старте
+        loadUser();
+
+        // Периодическое обновление счетчика
+        setInterval(async () => {
+            if (currentUser?.hasAccess) {
+                await loadMessages();
+            }
+        }, 30000);
+    </script>
+</body>
+</html> 
