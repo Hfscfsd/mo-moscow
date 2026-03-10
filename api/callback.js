@@ -10,9 +10,10 @@ export default async function handler(req, res) {
   }
   
   try {
-    const CLIENT_ID = process.env.DISCORD_CLIENT_ID;
-    const CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET;
-    const REDIRECT_URI = `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : 'http://localhost:3000'}/api/auth/callback`;
+    // Ваши данные
+    const CLIENT_ID = '1471781882231394344';
+    const CLIENT_SECRET = 'KW1dzvOIrrmtGVIn8yPwTSBQ7KdlVw_n';
+    const REDIRECT_URI = 'https://mo-moscow.vercel.app/api/auth/callback';
     
     // Обмен кода на токен
     const tokenResponse = await fetch('https://discord.com/api/oauth2/token', {
@@ -37,19 +38,20 @@ export default async function handler(req, res) {
     
     const userData = await userResponse.json();
     
-    // Здесь можно добавить проверку звания из Roblox
+    // Проверка админа (ваш ID)
+    const hasAccess = userData.id === '970227637173764156';
+    
+    // Сохраняем в куки
     const user = {
       id: userData.id,
       username: userData.username,
-      avatar: userData.avatar,
-      hasAccess: userData.id === process.env.ADMIN_USER_ID // Простая проверка
+      hasAccess: hasAccess
     };
     
-    // Сохраняем в куки (в Vercel нет сессий)
     const cookie = serialize('user', JSON.stringify(user), {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7, // 7 дней
+      secure: true,
+      maxAge: 60 * 60 * 24 * 7,
       path: '/'
     });
     
