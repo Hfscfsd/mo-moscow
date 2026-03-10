@@ -1,17 +1,17 @@
 // api/auth/discord.js
 export default function handler(req, res) {
-  const CLIENT_ID = process.env.DISCORD_CLIENT_ID;
+  // Ваши данные
+  const CLIENT_ID = '1471781882231394344';
   
-  // Автоматически определяем URL сайта
-  const baseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}` 
-    : 'http://localhost:3000';
-    
-  const REDIRECT_URI = `${baseUrl}/api/auth/callback`;
+  // Жестко прописываем URL вашего сайта (без автоматики)
+  const REDIRECT_URI = 'https://mo-moscow.vercel.app/api/auth/callback';
   
+  // Формируем ссылку для Discord
   const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify`;
   
-  console.log('Redirect URI:', REDIRECT_URI); // Для отладки
+  console.log('Redirect URI:', REDIRECT_URI);
+  console.log('Full auth URL:', discordAuthUrl);
   
+  // Отправляем пользователя в Discord
   res.redirect(discordAuthUrl);
 }
